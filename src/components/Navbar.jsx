@@ -3,7 +3,7 @@ import { PencilLine, Settings, User } from 'lucide-react';
 
 export default function Navbar() {
   return (
-    <header className="bg-white shadow-sm py-4 px-10">
+    <header className="bg-white shadow-sm py-4 px-50">
     
       <nav className="max-w-7xl mx-auto flex justify-between items-center">
         
