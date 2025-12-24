@@ -1,28 +1,24 @@
-import { useState } from 'react'
+
 import './App.css'
 import Navbar from './components/Navbar'
-import Banner from './components/Banner'
-import Post from './components/Post'
-import Pagination from './components/Pagination'
-import { BrowserRouter as Router } from 'react-router-dom'
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import ArticlePage from './components/ArticlePage'
+import HomePage from './components/HomePage'
+import { Navigate } from 'react-router-dom'
 
 
 function App() {
-  
-
   return (
     <>
     <Router>
-      <Navbar/>
-      <Banner/>
-      <main className="max-w-7xl mx-auto px-10 py-10">
-        <Post/>
-       
-      </main>
-      <Pagination/>
-      
-      
+      <Navbar/>{/*roof*/}
+      {/* the rooms */}
+      <Routes> 
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/articles/:slug" element={<ArticlePage/>}/>
+        <Route path="*" element={<Navigate to="/" />} />
+
+      </Routes>
     </Router>
     
     
