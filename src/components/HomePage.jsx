@@ -6,10 +6,10 @@ export default function HomePage() {
   return (
     <>
       <Banner />
-      <div className="max-w-7xl mx-auto px-[240px] pt-2">
+      <div className="max-w-7xl mx-auto px-4 md:px-20 lg:px-[240px] pt-2">
         <PopularTags />
       </div>
-      <main className="max-w-7xl mx-auto px-[240px] py-10">
+      <main className="max-w-7xl mx-auto px-4 md:px-20 lg:px-[240px] py-10">
         <ArticleList />
       </main>
     </>

@@ -1,10 +1,12 @@
 
 import './App.css'
-import Navbar from './components/Navbar'
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import ArticlePage from './components/ArticlePage'
 import HomePage from './components/HomePage'
-import { Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Profile from './components/Pages/Profile'
 import CreateNewPost from './components/Pages/CreateNewPost'
 import Setting from './components/Pages/Setting'
 
@@ -21,6 +23,14 @@ function App() {
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
         <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
+        {/*
+        <Route path='/sign-in' element={<Login/>}/>
+        <Route path="/sign-up" element={<Registration/>}/>
+        
+
+         */}
+        <Route path='/profile' element={<Profile/>}/>
+        
         <Route path="*" element={<Navigate to="/" />} />
 
       </Routes>

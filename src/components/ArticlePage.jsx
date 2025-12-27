@@ -6,7 +6,7 @@ import Author from "./UI/Author"
 import Tag from "./UI/Tag"
 
 export default function ArticlePage() {
-  const { slug } = useParams() // Get the slug from the URL parameters
+  const { slug } = useParams() // Getting slug from the URL parameters
   const [article, setArticle] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -46,11 +46,19 @@ export default function ArticlePage() {
         </div>
       </div>
 
-      {/* 2. ARTICLE CONTENT */}
-      <main className="max-w-7xl mx-auto px-10 pb-20">
-        {/* The Markdown Renderer */}
-        <div className="prose max-w-none text-gray-800 text-lg leading-relaxed mb-10">
-          <ReactMarkdown>{article.body}</ReactMarkdown>
+      {/*ARTICLE CONTENT */}
+      <main className="max-w-7xl mx-auto pb-20 px-4 md:px-20 lg:px-[240px] py-10 w-full overflow-hidden">
+        
+        <div className="max-w-none text-gray-800 text-lg leading-relaxed mb-10 break-words whitespace-pre-wrap">
+          <article className="prose lg:prose-xl max-w-none break-words prose-pre:whitespace-pre-wrap prose-pre:break-words">
+            <ReactMarkdown
+              components={{
+              // This part forces ANY <pre> or <code> tag to wrap text
+              pre: ({node, ...props}) => <div className="whitespace-pre-wrap break-words overflow-x-hidden" {...props} />,
+              code: ({node, ...props}) => <span className="whitespace-pre-wrap break-words" {...props} />
+            }}>
+              {article.body}</ReactMarkdown>
+          </article>
         </div>
 
         {/* 3. TAGS */}

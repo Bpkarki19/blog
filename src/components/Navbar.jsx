@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow-sm py-4 ">
     
-      <nav className="max-w-7xl mx-auto flex justify-between items-center px-[240px]">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-20 lg:px-[240px]">
         
        
         <Link to="/" className="text-2xl font-bold text-green-500">
