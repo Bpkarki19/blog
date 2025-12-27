@@ -45,9 +45,10 @@ export default function CreateNewPost() {
         onChange={handleChange}
         value={formData.content}
       />
-      <Button type='submit'>
-        Submit
-      </Button>
+      <div className="flex justify-end">
+        <Button type='submit'>Publish Article</Button>
+      </div>
+      
     </form>
     </div>
   )
