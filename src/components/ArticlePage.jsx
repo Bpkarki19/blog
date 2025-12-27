@@ -54,8 +54,8 @@ export default function ArticlePage() {
             <ReactMarkdown
               components={{
               // This part forces ANY <pre> or <code> tag to wrap text
-              pre: ({node, ...props}) => <div className="whitespace-pre-wrap break-words overflow-x-hidden" {...props} />,
-              code: ({node, ...props}) => <span className="whitespace-pre-wrap break-words" {...props} />
+              pre: ({...props}) => <div className="whitespace-pre-wrap break-words overflow-x-hidden" {...props} />,
+              code: ({...props}) => <span className="whitespace-pre-wrap break-words" {...props} />
             }}>
               {article.body}</ReactMarkdown>
           </article>
