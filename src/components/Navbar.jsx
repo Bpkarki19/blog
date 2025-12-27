@@ -27,7 +27,7 @@ export default function Navbar() {
 
           <li className="flex items-center gap-1 hover:text-green-500 transition-colors">
             <Settings size={18} />
-            <Link to="/settings">Settings</Link>
+            <Link to="/setting">Settings</Link>
           </li>
 
           <li className="flex items-center gap-2 hover:text-green-500 transition-colors">

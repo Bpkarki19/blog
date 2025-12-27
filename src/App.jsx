@@ -6,6 +6,7 @@ import ArticlePage from './components/ArticlePage'
 import HomePage from './components/HomePage'
 import { Navigate } from 'react-router-dom'
 import CreateNewPost from './components/Pages/CreateNewPost'
+import Setting from './components/Pages/Setting'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<HomePage/>}/>
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
         <Route path="/new-post" element = {<CreateNewPost/>}/>
+        <Route path='/setting' element={<Setting/>}/>
         <Route path="*" element={<Navigate to="/" />} />
 
       </Routes>
