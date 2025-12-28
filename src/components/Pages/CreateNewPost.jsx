@@ -1,6 +1,7 @@
-import { useState } from "react"
-import Input from '../UI/Input'
+import { useState } from "react";
+import Input from '../UI/Input';
 import Button from "../UI/Button";
+import Tag from '../UI/Tag';
 
 export default function CreateNewPost() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ export default function CreateNewPost() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-20 px-10 py-10 bg-white shadow-md rounded-lg border border-gray-100">
+    <div className="w-[500px] mx-auto mt-20 px-10"> {/*34px*/}
     <form onSubmit={handleSubmit}>
       <Input
         name="title"
@@ -33,20 +34,26 @@ export default function CreateNewPost() {
       />
       <Input
         name="description"
-        type="textarea"
+        type="text"
         placeholder="Short description"
         onChange={handleChange}
         value={formData.description}
       />
       <Input
+        className="placeholder:text-[#333333]"
         name="content"
-        type="text"
+        type="textarea"
         placeholder="Input your text"
         onChange={handleChange}
         value={formData.content}
       />
+      <div className="flex gap-2">
+        <Tag>React</Tag>
+        <Tag>React</Tag>
+        <Tag>React</Tag>
+      </div>
       <div className="flex justify-end">
-        <Button type='submit'>Publish Article</Button>
+        <Button type='submit' className="text-[18px] font-sans">Publish Article</Button>
       </div>
       
     </form>

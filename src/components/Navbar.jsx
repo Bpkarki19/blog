@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { Pencil, Settings, User } from 'lucide-react';
-import SettingLogo from './UI/SettingLogo';
+import { Link, } from 'react-router-dom';
+import LoggedinLink from './UI/LoggedInLinks';
+import LoggedOutLink from './UI/LoggedOutLink';
 
-export default function Navbar() {
+export default function Navbar({user}) {
   const iconColor = 'text-[#61BB61]'
   const brandGreen = '#61BB61'
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold";
@@ -24,21 +24,14 @@ export default function Navbar() {
               Home
             </Link>
           </li>
+          {/*conditional logic*/}
+          {user ? (
+          <LoggedinLink/>
+          ):(
+            <LoggedOutLink/>
+          )}
+
           
-          <li className="flex items-center gap-1 hover:text-green-500 transition-colors">
-            <Pencil size={18} className={iconColor} fill={brandGreen} />
-            <Link to="/new-post" className={navLinkStyle} >New Post</Link>
-          </li>
-
-          <li className="flex items-center gap-1 hover:text-green-500 transition-colors">
-            <SettingLogo/>
-            <Link to="/setting" className={navLinkStyle}>Settings</Link>
-          </li>
-
-          <li className="flex items-center gap-2 hover:text-green-500 transition-colors">
-            <User size={18} className={iconColor} fill={brandGreen}/>
-            <Link to="/profile" className={navLinkStyle}>eni9mu5</Link>
-          </li>
         </ul>
 
       </nav>

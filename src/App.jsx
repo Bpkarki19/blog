@@ -1,4 +1,4 @@
-
+import { useState } from 'react'
 import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -9,26 +9,28 @@ import Navbar from './components/Navbar'
 import Profile from './components/Pages/Profile'
 import CreateNewPost from './components/Pages/CreateNewPost'
 import Setting from './components/Pages/Setting'
+import Login  from './components/Pages/Login'
+import Registration from './components/Pages/Registration'
 
 
 function App() {
-  console.log(CreateNewPost);
+  const [user, setUser] = useState(null);
   return (
     <>
     <Router>
-      <Navbar/>{/*roof*/}
+      <Navbar user={user}/>{/*roof*/}
       {/* the rooms */}
       <Routes> 
         <Route path="/" element={<HomePage/>}/>
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
         <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
-        {/*
+        
         <Route path='/sign-in' element={<Login/>}/>
         <Route path="/sign-up" element={<Registration/>}/>
         
 
-         */}
+         
         <Route path='/profile' element={<Profile/>}/>
         
         <Route path="*" element={<Navigate to="/" />} />
