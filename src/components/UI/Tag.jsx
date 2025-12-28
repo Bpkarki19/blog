@@ -1,7 +1,7 @@
 export default function Tag({ children,
     clickable = false, 
     className = "" }) {
-  const baseStyles = "border border-gray-300 text-gray-400 px-3 py-0.5 rounded-full text-[10px] transition-colors";
+  const baseStyles = "border border-[#AAAAAA] text-[#AAAAAA] font-semibold px-3 py-0.5 rounded-full text-[12.8px] transition-colors";
   
   // If clickable, we add hover effects and a pointer cursor
   const interactionStyles = clickable 

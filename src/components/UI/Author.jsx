@@ -8,7 +8,8 @@ export default function Author({
   name, 
   date, 
   image, 
-  variant = 'default'
+  variant = 'default',
+  color='text-[#AAAAAA]-400'
 }) {
   
   
@@ -25,17 +26,17 @@ export default function Author({
           className={`${avatarSize} rounded-full object-cover bg-gray-100`} 
         />
       ) : (
-        <div className={`${avatarSize} bg-gray-100 rounded-full flex items-center justify-center`}>
-          <User size={variant === 'large' ? 24 : 18} className="text-green-500" />
+        <div className={`${avatarSize}  rounded-full flex items-center justify-center`}>
+          <User size={variant === 'large' ? 24 : 18} className="text-green-500" fill={'#61BB61'} />
         </div>
       )}
 
       {/* Name and Date */}
       <div className="flex flex-col">
-        <span className={`text-green-500 font-bold ${nameSize} leading-tight hover:underline cursor-pointer`}>
+        <span className={`text-[#5CB85C] font-bold ${nameSize} leading-tight hover:underline cursor-pointer`}>
           {name}
         </span>
-        <span className="text-gray-400 text-[10px]">
+        <span className={`${color} text-[12.8px] font-normal`}>
           {date}
         </span>
       </div>

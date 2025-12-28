@@ -18,7 +18,7 @@ export default function Post({ article }) {
   } = article
 
   return (
-    <div className="w-full h-[230px] bg-white border border-gray-200 rounded-md p-5 flex flex-col justify-between shadow-sm">
+    <div className="w-full h-[230px] bg-white border border-[#AAAAAA] rounded-md p-5 flex flex-col justify-between ">
       {/* HEADER: Author & Like Button */}
       <div className="flex justify-between items-center">
         <Author
@@ -34,15 +34,16 @@ export default function Post({ article }) {
         </Button>
       </div>
 
+      {/*Title*/}
       <div className="mt-3">
         {/* line-clamp-1: Ensures title stays on one line */}
         <Link to={`/articles/${slug}`}>
-          <h2 className="text-xl font-bold text-gray-800 line-clamp-1 mb-2">
+          <h2 className="text-[32px] font-bold text-[#333333] line-clamp-1 mb-2">
             {title}
           </h2>
         </Link>
 
-        <p className="text-gray-400 text-sm font-light line-clamp-3">
+        <p className="text-[#333333] text-[16px] font-light line-clamp-3">
           {description}
         </p>
       </div>

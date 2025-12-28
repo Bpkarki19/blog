@@ -50,7 +50,7 @@ export default function ArticleList() {
       )}
       {!loading && !error && (
         <>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-[16px]">
             {" "}
             {/*gapping posts*/}
             {articles?.map((article) => (
