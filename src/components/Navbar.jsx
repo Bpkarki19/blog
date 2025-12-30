@@ -3,8 +3,8 @@ import LoggedinLink from './UI/LoggedInLinks';
 import LoggedOutLink from './UI/LoggedOutLink';
 
 export default function Navbar({user}) {
-  const iconColor = 'text-[#61BB61]'
-  const brandGreen = '#61BB61'
+  const navLinkClass = ({isActive})=>`flex items-center gap-1 transition-colors ${isActive ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'}`
+  
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold";
 
   return (
@@ -26,7 +26,7 @@ export default function Navbar({user}) {
           </li>
           {/*conditional logic*/}
           {user ? (
-          <LoggedinLink/>
+          <LoggedinLink user={user}/>
           ):(
             <LoggedOutLink/>
           )}

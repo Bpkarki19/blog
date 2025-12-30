@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -14,11 +14,23 @@ import Registration from './components/Pages/Registration'
 
 
 function App() {
-  const [user, setUser] = useState(null);
+  // React runs this function ONLY ONCE, at the very beginning
+  const [currentUser, setCurrentUser] = useState(()=>{
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved):null;
+  });
+  
+ 
+
+  const logout = ()=>{
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setCurrentUser(null);
+  }
   return (
     <>
     <Router>
-      <Navbar user={user}/>{/*roof*/}
+      <Navbar user={currentUser}/>{/*roof*/}
       {/* the rooms */}
       <Routes> 
         <Route path="/" element={<HomePage/>}/>
@@ -26,7 +38,7 @@ function App() {
         <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
         
-        <Route path='/sign-in' element={<Login/>}/>
+        <Route path='/sign-in' element={<Login onLogin={setCurrentUser}/>}/>
         <Route path="/sign-up" element={<Registration/>}/>
         
 

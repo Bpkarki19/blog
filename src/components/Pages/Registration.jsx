@@ -2,104 +2,133 @@ import { useState } from "react"
 import axios from 'axios';
 import Input from "../UI/Input"
 import Button from "../UI/Button"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
+import { useForm } from 'react-hook-form';
+import { useAuth } from "../../context/AuthContext"; // Ensure path is correct
 
 export default function Registration() {
-  const navigate = useNavigate()
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(null)
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  })
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  // 1. Initialize React Hook Form
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    setError, 
+    formState: { errors, isSubmitting } 
+  } = useForm({
+    mode: "onBlur" // Validates when user leaves the input
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log('successful');
-    console.log(formData);
-    setLoading(true)
-    setError(null)
+  // 2. Logic for the API request
+  const onFormSubmit = async (data) => {
+    setServerError(null);
     try {
       const payload = {
         user: {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
+          username: data.username,
+          email: data.email,
+          password: data.password,
         },
-      }
+      };
+      
       const response = await axios.post(
         "https://realworld.habsida.net/api/users",
         payload
-      )
-      console.log("success", response.data.user)
-      //response.data.user.token to localStorage
-      navigate("/")
+      );
+      
+      // Update global auth context and redirect
+      login(response.data.user);
+      navigate("/");
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.errors) {
-        const errors = err.response.data.errors
-        //converting api error object into string
-        const errMsg = Object.entries(errors)
-          .map(([key, val]) => `${key} ${val}`)
-          .join(",")
-        setError(errMsg)
+      if (err.response?.data?.errors) {
+        // This maps server errors back to the specific input fields
+        Object.entries(err.response.data.errors).forEach(([key, val]) => {
+          setError(key, { type: "manual", message: `${key} ${val}` });
+        });
+      } else {
+        setServerError("Failed to connect to the server.");
       }
-    } finally {
-      setLoading(false)
     }
-  }
+  };
 
   return (
     <div className="w-[500px] mx-auto mt-20 px-10">
-      {" "}
-      {/*34px*/}
       <div className="flex justify-center">
-        <h1 className="font-bold text-5xl pb-5">Sign up</h1>
+        <h1 className="font-bold text-5xl pb-10">Sign up</h1>
       </div>
-      {/* Show Error Message if any */}
-      {error && (
-        <ul className="bg-red-50 text-red-500 p-4 rounded-lg mb-4 list-disc list-inside">
-          <li>{error}</li>
-        </ul>
+
+      {/* Show Server/General Errors */}
+      {serverError && (
+        <div className="bg-red-50 text-red-500 p-4 rounded-lg mb-4 text-sm text-center">
+          {serverError}
+        </div>
       )}
-      <form onSubmit={handleSubmit}>
+
+      {/* 3. handleSubmit(onFormSubmit) is the magic link */}
+      <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col">
         <Input
-          name="username"
-          type="text"
           placeholder="Username"
-          onChange={handleChange}
-          value={formData.username}
-        />
-        <Input
-          name="email"
-          type="email"
-          placeholder="Email Address"
-          onChange={handleChange}
-          value={formData.email}
-        />
-        <Input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-          value={formData.password}
-        />
-        <Input
-          name="repeatPassword"
-          type="text"
-          placeholder="Repeat Password"
-          onChange={handleChange}
-          value={formData.description}
+          error={errors.username}
+          {...register("username", { 
+            required: "Username is required",
+            minLength: { value: 3, message: "Min 3 characters" },
+            maxLength: { value: 20, message: "Max 20 characters" }
+          })}
         />
 
-        <div className="flex justify-end">
-          <Button type="submit" className="text-[18px] font-sans">
-            Sign up
+        <Input
+          placeholder="Email Address"
+          type="email"
+          error={errors.email}
+          {...register("email", { 
+            required: "Email is required",
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: "Invalid email format"
+            }
+          })}
+        />
+
+        <Input
+          placeholder="Password"
+          type="password"
+          error={errors.password}
+          {...register("password", { 
+            required: "Password is required",
+            minLength: { value: 6, message: "Min 6 characters" },
+            maxLength: { value: 40, message: "Max 40 characters" }
+          })}
+        />
+
+        <Input
+          placeholder="Repeat Password"
+          type="password"
+          error={errors.repeatPassword}
+          {...register("repeatPassword", { 
+            required: "Please repeat your password",
+            validate: (value) => value === watch('password') || "Passwords do not match"
+          })}
+        />
+
+        {/* 4. Mandatory Checkbox from Requirements */}
+        <div className="py-4 border-t border-gray-100 mt-2">
+          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="w-4 h-4 accent-green-500"
+              {...register("agreement", { required: true })} 
+            />
+            I agree to the processing of my personal information
+          </label>
+          {errors.agreement && <p className="text-red-500 text-xs mt-1 font-medium">Agreement is required</p>}
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <Button type="submit" disabled={isSubmitting} className="text-[18px] font-sans">
+            {isSubmitting ? "Signing up..." : "Sign up"}
           </Button>
         </div>
       </form>

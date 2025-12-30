@@ -1,7 +1,11 @@
 import SettingLogo from './SettingLogo';
 import { Pencil, User } from 'lucide-react';
-export default function LoggedinLink() {
+import {Link} from 'react-router-dom'
+
+export default function LoggedinLink({user}) {
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold"
+  const iconColor = 'text-[#61BB61]'
+  const brandGreen = '#61BB61'
   return (
     <>
       <li className="flex items-center gap-1 hover:text-green-500 transition-colors">
@@ -18,8 +22,8 @@ export default function LoggedinLink() {
       </li>
       <li className="flex items-center gap-2 hover:text-green-500 transition-colors">
         <User size={18} className={iconColor} fill={brandGreen} />
-        <Link to="/profile" className={navLinkStyle}>
-          Real_username
+        <Link to={`/profile/${user?.username}`} className={navLinkStyle}>
+        {user?.username}
         </Link>
       </li>
     </>
