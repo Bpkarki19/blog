@@ -19,7 +19,7 @@ export default function Login({onLogin}) {
   }
 
   const handleSubmit = async (e) => {
-    console.log(formData);
+    //console.log(formData);
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -76,11 +76,13 @@ export default function Login({onLogin}) {
           type="password"
           placeholder="password"
           onChange={handleChange}
-          value={formData.description}
+          value={formData.password}
         />
 
         <div className="flex justify-end">
-          <Button type="submit" className="text-[18px] font-sans">
+          <Button type="submit" 
+          disabled={loading} //dissable when loading
+          className="text-[18px] font-sans">
             Sign in
           </Button>
         </div>

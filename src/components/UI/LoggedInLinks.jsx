@@ -2,7 +2,7 @@ import SettingLogo from './SettingLogo';
 import { Pencil, User } from 'lucide-react';
 import {Link} from 'react-router-dom'
 
-export default function LoggedinLink({user}) {
+export default function LoggedinLink({user, onLogout}) {
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold"
   const iconColor = 'text-[#61BB61]'
   const brandGreen = '#61BB61'

@@ -28,19 +28,17 @@ export default function Setting() {
       const res = await axios.put(
         "https://realworld.habsida.net/api/user",
         { user: data },
-        { headers: { Authorization: `Tokrn ${token}` } }
+        { headers: { Authorization: `Token ${token}` } }
       )
       login(res.data.user) //update global state
       alert("settings updated")
-    } catch {
-      err
-    }
-    {
+    } catch (error) {
+      console.error(error)
       alert("Failed to update profile")
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
     e.preventDefault()
     logout()
     navigate("/")
@@ -58,23 +56,35 @@ export default function Setting() {
           placeholder="username"
           {...register("username", { required: "Username is required" })}
         />
-        <Input name="email" type="email" placeholder="Email Address" error={errors.email} 
-        {...register("email",{
-          required:"Email is required",
-          pattern:{value:/^\S+@\S+$/i, message: "Invalid email"}
-        })}/>
+        <Input
+          name="email"
+          type="email"
+          placeholder="Email Address"
+          error={errors.email}
+          {...register("email", {
+            required: "Email is required",
+            pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
+          })}
+        />
         <Input
           className="h-[100px] placeholder:text-[#333333]"
           name="username"
           type="textarea" // text area keeps it above
           placeholder="Input your comment"
+          {...register("bio")}
         />
-        <Input name="avatar" type="text" placeholder="Avatar image (URL)" />
+        <Input
+          type="text"
+          placeholder="Avatar image (URL)"
+          {...register("image")}
+        />
         <div className="flex justify-end">
           <Button
+            type="submit"
+            disabled={isSubmitting}//important
             className="text-[18px] font-normal" //400 = normal
           >
-            Update Settings
+            {isSubmitting ? "updating...":"update Settings"}
           </Button>
         </div>
         <div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -13,7 +13,7 @@ import Login  from './components/Pages/Login'
 import Registration from './components/Pages/Registration'
 
 
-function App() {
+export default function App() {
   // React runs this function ONLY ONCE, at the very beginning
   const [currentUser, setCurrentUser] = useState(()=>{
     const saved = localStorage.getItem('user');
@@ -21,16 +21,10 @@ function App() {
   });
   
  
-
-  const logout = ()=>{
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    setCurrentUser(null);
-  }
   return (
     <>
     <Router>
-      <Navbar user={currentUser}/>{/*roof*/}
+      <Navbar user={currentUser}/>
       {/* the rooms */}
       <Routes> 
         <Route path="/" element={<HomePage/>}/>
@@ -56,4 +50,4 @@ function App() {
   )
 }
 
-export default App
+
