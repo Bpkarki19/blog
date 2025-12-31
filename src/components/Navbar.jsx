@@ -1,10 +1,9 @@
-import { Link, } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoggedinLink from './UI/LoggedInLinks';
 import LoggedOutLink from './UI/LoggedOutLink';
 
 export default function Navbar({user}) {
-  const navLinkClass = ({isActive})=>`flex items-center gap-1 transition-colors ${isActive ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'}`
-  
+    
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold";
 
   return (

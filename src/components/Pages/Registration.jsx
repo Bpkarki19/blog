@@ -15,7 +15,6 @@ export default function Registration() {
   const { 
     register, 
     handleSubmit, 
-    watch, 
     setError, 
     formState: { errors, isSubmitting } 
   } = useForm({
@@ -109,7 +108,7 @@ export default function Registration() {
           error={errors.repeatPassword}
           {...register("repeatPassword", { 
             required: "Please repeat your password",
-            validate: (value) => value === watch('password') || "Passwords do not match"
+            validate: (value, formValues) => value === formValues.password || "Passwords do not match"
           })}
         />
 
