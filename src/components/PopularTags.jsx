@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Tag from '../components/UI/Tag'
-import api from '../services/api'
+import api from '../services/api';
 export default function PopularTags() {
     const [tags, setTags] = useState([]);
     
