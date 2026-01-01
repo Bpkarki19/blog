@@ -9,7 +9,7 @@ export default function CreateNewPost() {
   const [formData, setFormData] = useState({
     title:'',
     description:'',
-    content:'',
+    body:'',
     tags:''
   });
 
@@ -70,7 +70,7 @@ export default function CreateNewPost() {
       />
       <Input
         className="placeholder:text-[#333333]"
-        name="content"
+        name="body"
         type="textarea"
         placeholder="Input your text"
         onChange={handleChange}
