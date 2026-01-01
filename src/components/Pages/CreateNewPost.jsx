@@ -27,7 +27,7 @@ export default function CreateNewPost() {
       article:{
         title:formData.title,
         description:formData.description,
-        body:formData.content,
+        body:formData.body,
         tags:formData.tags.split(',').map(tag=>tag.trim())//"a,b"=>['a','b']npm 
       }
 
@@ -74,9 +74,10 @@ export default function CreateNewPost() {
         type="textarea"
         placeholder="Input your text"
         onChange={handleChange}
-        value={formData.content}
+        value={formData.body}
       />
       <Input 
+      name="tags"
       className="flex gap-2"
       type="text"
       placeholder="Enter tags (separated by commas)"
