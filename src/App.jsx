@@ -11,6 +11,7 @@ import CreateNewPost from './components/Pages/CreateNewPost'
 import Setting from './components/Pages/Setting'
 import Login  from './components/Pages/Login'
 import Registration from './components/Pages/Registration'
+import EditPost from './components/Pages/EditPost'
 
 
 export default function App() {
@@ -31,15 +32,11 @@ export default function App() {
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
         <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
-        
         <Route path='/sign-in' element={<Login onLogin={setCurrentUser}/>}/>
         <Route path="/sign-up" element={<Registration/>}/>
-        
-
-         
         <Route path='/profile' element={<Profile/>}/>
-        
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/editor/:slug" element={<EditPost />} />
 
       </Routes>
     </Router>

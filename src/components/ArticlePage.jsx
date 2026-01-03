@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
 import ReactMarkdown from "react-markdown"
 import Author from "./UI/Author"
@@ -10,6 +10,7 @@ export default function ArticlePage() {
   const { slug } = useParams() // Getting slug from the URL parameters
   const [article, setArticle] = useState(null)
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate();
 
   const centerContent = "max-w-7xl mx-auto pb-20 px-4 md:px-20 lg:px-[240px] py-10 w-full overflow-hidden"
 
@@ -85,6 +86,12 @@ export default function ArticlePage() {
             date={new Date(article.createdAt).toLocaleDateString()}
           />
           <Button size="md">Favourite article</Button>
+          <Button 
+          size="md"
+          onClick={()=>navigate(`/editor/${article.slug}`)}>
+            Edit </Button>
+          <Button size="md">Delete</Button>
+
 
           </div>
       </main>
