@@ -11,7 +11,7 @@ export default function Registration() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(null);
 
-  // 1. Initialize React Hook Form
+  //Initializing React Hook Form
   const { 
     register, 
     handleSubmit, 
@@ -21,7 +21,7 @@ export default function Registration() {
     mode: "onBlur" // Validates when user leaves the input
   });
 
-  // 2. Logic for the API request
+  //Logic for the API request
   const onFormSubmit = async (data) => {
     setServerError(null);
     try {
@@ -66,7 +66,7 @@ export default function Registration() {
         </div>
       )}
 
-      {/* 3. handleSubmit(onFormSubmit) is the magic link */}
+      {/* 3. handleSubmit(onFormSubmit)  */}
       <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col">
         <Input
           placeholder="Username"

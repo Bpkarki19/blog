@@ -3,24 +3,28 @@ import { useEffect, useState } from "react";
 import Input from '../UI/Input';
 import Button from "../UI/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 export default function EditPost() {
   const {slug} = useParams();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    title:'',
-    description:'',
-    body:'',
-    tags:''
-  });
+
   const [loading, setLoading] = useState(true);
+
+  //Initializing react hook form
+  const {
+    register,
+    handleSubmit,
+    reset,//used to fill the form after fetching data
+    formState:{ errors, isSubmitting}
+  } = useForm({mode:"onBlur"});
 
   useEffect(()=>{
     const fetchArticle = async()=>{
       try{
         const response = await api.get(`/articles/${slug}`);
         const article = response.data.article;
-        setFormData({
+        reset({
           title:article.title,
           description:article.description,
           body:article.body,
@@ -34,30 +38,21 @@ export default function EditPost() {
       }
     }
     fetchArticle();
-  },[slug]);
+  },[slug, reset]);
 
-  const handleChange=(e)=>{
-    const {name,value} = e.target;
-    setFormData(prev=>(
-      {...prev, [name]:value}
-    ));
-  };
+ 
 
-  
-  const handleSubmit= async (e)=>{
-    e.preventDefault();
-    await onUpdate(); 
-  }
 
-  const onUpdate = async () => {
+
+  const onUpdate = async (data) => {
     try {
         const payload = {
             article: {
-                title: formData.title,
-                description: formData.description,
-                body: formData.body,
+                title: data.title,
+                description: data.description,
+                body: data.body,
              
-                tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()) : []
+                tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : []
             }
         };
         const response = await api.put(`/articles/${slug}`, payload);
@@ -72,40 +67,50 @@ export default function EditPost() {
 
   return (
     <div className="w-[500px] mx-auto mt-20 px-10">
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onUpdate)}>
       <Input
-        name="title"
-        type="text"
         placeholder="Enter title"
-        onChange={handleChange}
-        value={formData.title}
+        error = {errors.title?.message}
+        {...register("title",{
+          required:"Title is required",
+          minLength:{value:3, message:"Min 3 characters"},
+          maxLength:{value:50, message:"Max 50 characters"},
+      })}
       />
       <Input
-        name="description"
-        type="text"
+
+        {...register("description",{
+          required:"Title is required",
+          minLength:{val:15, message:"Min 15 characters"},
+          maxLength:{val:100, message: "Max 100 character"}
+        })}
         placeholder="Short description"
-        onChange={handleChange}
-        value={formData.description}
+        error = {errors.description?.message}
       />
       <Input
         className="placeholder:text-[#333333]"
-        name="body"
+        error = {errors.body?.message}
+        {...register("body",{
+          required:"Body is required",
+          minLength:{val:15, message:"Min 15 characters"},
+          maxLength:{val:200, message: "Max 200 character"}
+
+        })}
         type="textarea"
         placeholder="Input your text"
-        onChange={handleChange}
-        value={formData.body}
+        
       />
       <Input 
-        name="tags"
+        {...register("tags",{
+          required:"Tags are required",
+        })}
         className="flex gap-2"
-        type="text"
         placeholder="Enter tags (separated by commas)"
-        onChange={handleChange}
-        value={formData.tags}
       />
         
       <div className="flex justify-end">
-        <Button type='submit' className="text-[18px] font-sans">Publish Article</Button>
+        <Button type='submit' className="text-[18px] font-sans">
+          {isSubmitting ? "Updating...": "Update Article"}</Button>
       </div>
     </form>
     </div>
