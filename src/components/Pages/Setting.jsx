@@ -1,9 +1,10 @@
 import { useAuth } from "../../context/AuthContext"
 import { useForm } from "react-hook-form"
-import axios from "axios"
+import api from "../../services/api"
 import { useNavigate } from "react-router-dom"
 import Button from "../UI/Button"
 import Input from "../UI/Input"
+
 
 export default function Setting() {
   const { user, login, logout } = useAuth()
@@ -14,42 +15,41 @@ export default function Setting() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
+    mode:"all",
     defaultValues: {
-      username: user?.username,
-      email: user?.email,
+      username: user?.username || "",
+      email: user?.email || "",
       bio: user?.bio || "",
       image: user?.image || "",
+      password: "",
     },
   })
 
   const onUpdate = async (data) => {
     try {
-      const token = localStorage.getItem("token")
-      const res = await axios.put(
-        "https://realworld.habsida.net/api/user",
-        { user: data },
-        { headers: { Authorization: `Token ${token}` } }
-      )
+      const payload = { ...data }
+      if (!payload.password) delete payload.password
+      const res = await api.put(`/user`, { user: payload });
       login(res.data.user) //update global state
       alert("settings updated")
     } catch (error) {
-      console.error(error)
-      alert("Failed to update profile")
+      console.error("Update Error:",error);
+      const serverError = error.response?.data?.errors;
+      alert(serverError ? JSON.stringify(serverError):"Failed to update profile");
     }
   }
 
-  const handleLogout = (e) => {
-    e.preventDefault()
-    logout()
-    navigate("/")
-  }
+  const handleLogout = () => {
+    logout();
+    navigate("/", {replace: true});
+  };
 
   return (
     <div className="flex-col w-[480px] mx-auto">
       <div className="flex justify-center">
         <h1 className="font-bold text-5xl pb-5">Your settings</h1>
       </div>
-      <form onSubmit={handleSubmit(onUpdate)}>
+      <form onSubmit={handleSubmit(onUpdate)} className="space-y-4">
         <Input
           type="text"
           error={errors.username}
@@ -57,7 +57,6 @@ export default function Setting() {
           {...register("username", { required: "Username is required" })}
         />
         <Input
-          name="email"
           type="email"
           placeholder="Email Address"
           error={errors.email}
@@ -68,7 +67,6 @@ export default function Setting() {
         />
         <Input
           className="h-[100px] placeholder:text-[#333333]"
-          name="username"
           type="textarea" // text area keeps it above
           placeholder="Input your comment"
           {...register("bio")}
@@ -81,10 +79,10 @@ export default function Setting() {
         <div className="flex justify-end">
           <Button
             type="submit"
-            disabled={isSubmitting}//important
+            disabled={isSubmitting} //important
             className="text-[18px] font-normal" //400 = normal
           >
-            {isSubmitting ? "updating...":"update Settings"}
+            {isSubmitting ? "updating..." : "update Settings"}
           </Button>
         </div>
         <div>

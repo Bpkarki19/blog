@@ -7,7 +7,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(()=>{
     try{
       const savedUser = localStorage.getItem('user');
-      return savedUser ? JSON.parse(savedUser) : null;
+      if(!savedUser) return null;
+      const parsedData = JSON.parse(savedUser);
+      return parsedData.user ? parsedData.user : parsedData;
     }catch(error){
       console.error("failed to parse user from localStorage", error);
       return null;
@@ -16,15 +18,17 @@ export const AuthProvider = ({ children }) => {
  
  
   const login = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', userData.token);
-    setUser(userData);
+    const cleanUser = userData.user ? userData.user:userData;
+    localStorage.setItem('user', JSON.stringify(cleanUser));
+    localStorage.setItem('token', cleanUser.token);
+    setUser(cleanUser);
   };
 
   const logout = () => {
+    console.log("Logout triggered: Clearing state and storage");
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    setUser(null);
+    setUser(null);// trigger navbar re-render
   };
 
   return (

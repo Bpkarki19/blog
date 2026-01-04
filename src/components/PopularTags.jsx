@@ -8,7 +8,7 @@ export default function PopularTags() {
         const getData = async ()=>{
             try{
             const response = await api.get('/tags');
-            console.log(response.data.tags);
+            //console.log(response.data.tags);
             setTags(response.data.tags);
         }catch(errors){
             console.error(errors);

@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import LoggedinLink from './UI/LoggedInLinks';
 import LoggedOutLink from './UI/LoggedOutLink';
+import { useAuth } from '../context/AuthContext'; 
 
-export default function Navbar({user}) {
+export default function Navbar() {
+  const {user} = useAuth();
+  console.log('user on navbar',user?.username);
     
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold";
 
@@ -24,8 +27,8 @@ export default function Navbar({user}) {
             </Link>
           </li>
           {/*conditional logic*/}
-          {user ? (
-          <LoggedinLink user={user}/>
+          {user? (
+          <LoggedinLink username={user.username}/>//data is nested!!
           ):(
             <LoggedOutLink/>
           )}

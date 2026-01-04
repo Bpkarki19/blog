@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import axios from 'axios';
+import api from '../../services/api';
 import Post from '../Post';
 import { Heart } from 'lucide-react';
 
@@ -10,16 +10,18 @@ export default function Profile() {
   const { user: currentUser } = useAuth();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  //const isCurrentUser = currentUser?.username === username;
+  console.log(currentUser);
 
   // Fetching only this user's articles
   useEffect(() => {
     const fetchUserArticles = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `https://realworld.habsida.net/api/articles?author=${username || currentUser?.username}&limit=5`
-        );
-        setArticles(res.data.articles);
+        const response = await api.get(`/articles?author=${username}`);
+        console.log('users only post',response);
+        setArticles(response.data.articles);
       } catch (err) {
         console.error("Failed to fetch user articles", err);
       } finally {
@@ -27,7 +29,7 @@ export default function Profile() {
       }
     };
     fetchUserArticles();
-  }, [username, currentUser]);
+  }, [username]);
 
   return (
     <div className="profile-page">

@@ -1,21 +1,40 @@
-import { Heart, User } from "lucide-react"
+import { Heart} from "lucide-react"
 import Button from "./UI/Button"
 import Tag from "./UI/Tag"
 import Author from "./UI/Author"
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import api from "../services/api";
+import { useState } from "react";
 
 export default function Post({ article }) {
-  if (!article) return null; //safety check
+  console.log(article);
+  const [currentArticle, setCurrentArticle] = useState(article);
+
+  if (!currentArticle) return null; //safety check
   //destructure data from article Api
+  
   const {
     title,
     description,
     author,
-    taglist = [],// bug found : Data in API may not have taglist and ending undefined
+    tagList = [],// bug found : Data in API may not have taglist and ending undefined
     createdAt,
-    favouriteCount,
+    favoritesCount,
+    favorited,
     slug,
-  } = article
+  } = currentArticle;
+  //console.log('article==>',article.favoritesCount);
+
+  const handleLike = async ()=>{
+    try{
+      const method = favorited ? "delete":"post";
+      const response = await api[method](`/articles/${slug}/favorite`);
+      setCurrentArticle(response.data.article);
+    }catch(err){
+      console.error("could not like post",err);
+    }
+    
+  };
 
   return (
     <div className="w-full h-[230px] bg-white border border-[#AAAAAA] rounded-md p-5 flex flex-col justify-between ">
@@ -28,9 +47,9 @@ export default function Post({ article }) {
         />
 
         {/* Like Button */}
-        <Button variant="outline" size="sm">
-          <Heart size={12} />
-          <span>{favouriteCount}</span>
+        <Button variant={favorited ? "primary":"outline"} size="sm" onClick={handleLike}>
+          <Heart size={12} fill = {favorited ? "white":"none"}/>
+          <span>{favoritesCount}</span>
         </Button>
       </div>
 
@@ -49,7 +68,7 @@ export default function Post({ article }) {
       </div>
 
       <div className="flex flex-wrap gap-2 mt-auto">
-        {taglist.map((tag, index) => (
+        {tagList.map((tag, index) => (
           <Tag key={index}>{tag}</Tag>
         ))}
       </div>

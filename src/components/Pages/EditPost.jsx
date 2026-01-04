@@ -17,7 +17,7 @@ export default function EditPost() {
     handleSubmit,
     reset,//used to fill the form after fetching data
     formState:{ errors, isSubmitting}
-  } = useForm({mode:"onBlur"});
+  } = useForm({mode:"all"});//Real-time feedback (passwords, live searches)
 
   useEffect(()=>{
     const fetchArticle = async()=>{
@@ -52,7 +52,7 @@ export default function EditPost() {
                 description: data.description,
                 body: data.body,
              
-                tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : []
+                tagList: data.tags ? data.tags.split(',').map(tag => tag.trim()) : []
             }
         };
         const response = await api.put(`/articles/${slug}`, payload);
@@ -70,7 +70,7 @@ export default function EditPost() {
     <form onSubmit={handleSubmit(onUpdate)}>
       <Input
         placeholder="Enter title"
-        error = {errors.title?.message}
+        error = {errors.title}
         {...register("title",{
           required:"Title is required",
           minLength:{value:3, message:"Min 3 characters"},
@@ -80,20 +80,20 @@ export default function EditPost() {
       <Input
 
         {...register("description",{
-          required:"Title is required",
-          minLength:{val:15, message:"Min 15 characters"},
-          maxLength:{val:100, message: "Max 100 character"}
+          required:"description is required",
+          minLength:{value:15, message:"Min 15 characters"},
+          maxLength:{value:100, message: "Max 100 character"}
         })}
         placeholder="Short description"
-        error = {errors.description?.message}
+        error = {errors.description}
       />
       <Input
         className="placeholder:text-[#333333]"
-        error = {errors.body?.message}
+        error = {errors.body}
         {...register("body",{
           required:"Body is required",
-          minLength:{val:15, message:"Min 15 characters"},
-          maxLength:{val:200, message: "Max 200 character"}
+          minLength:{value:15, message:"Min 15 characters"},
+          maxLength:{value:200, message: "Max 200 character"}
 
         })}
         type="textarea"
@@ -101,8 +101,9 @@ export default function EditPost() {
         
       />
       <Input 
+        error = {errors.tags}
         {...register("tags",{
-          required:"Tags are required",
+          required:"Atlest one tag is required",
         })}
         className="flex gap-2"
         placeholder="Enter tags (separated by commas)"

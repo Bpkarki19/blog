@@ -25,16 +25,17 @@ export default function App() {
   return (
     <>
     <Router>
-      <Navbar user={currentUser}/>
+      <Navbar/>
       {/* the rooms */}
       <Routes> 
         <Route path="/" element={<HomePage/>}/>
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
-        <Route path="/new-post" element = {<CreateNewPost/>}/>
+        <Route path="/new-post" 
+        element = { currentUser ? <CreateNewPost/>:<Navigate to ="/sign-in"/>}/>
         <Route path='/setting' element={<Setting/>}/>
         <Route path='/sign-in' element={<Login onLogin={setCurrentUser}/>}/>
         <Route path="/sign-up" element={<Registration/>}/>
-        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/profile/:username' element={<Profile/>}/>
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/editor/:slug" element={<EditPost />} />
 

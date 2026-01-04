@@ -1,96 +1,97 @@
 import api from "../../services/api";
-import { useState } from "react"; 
 import Input from '../UI/Input';
 import Button from "../UI/Button";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-export default function CreateNewPost() {
+export default function EditPost() {
+  
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    title:'',
-    description:'',
-    body:'',
-    tags:''
+  
+
+  const {
+    register,
+    handleSubmit,
+   
+    formState: { errors, isSubmitting }
+  } = useForm({ 
+    mode: "onChange" // Errors will show as you type
   });
 
-  const handleChange=(e)=>{
-    const {name,value} = e.target;
-    setFormData(prev=>(
-      {...prev, [name]:value}
-    ));
+  
+
+  const onUpdate = async (data) => {
+    try {
+      const payload = {
+        article: {
+          title: data.title,
+          description: data.description,
+          body: data.body,
+          tagList: data.tags ? data.tags.split(',').map(tag => tag.trim()) : []
+        }
+      };
+      const response = await api.post(`/articles`, payload);
+      navigate(`/articles/${response.data.article.slug}`);
+    } catch (error) {
+      console.error(error);
+      alert("Update failed.");
+    }
   };
 
-  const handleSubmit= async (e)=>{
-    e.preventDefault();
-    console.log('submitted data: ',formData);
-    const payload = {
-      article:{
-        title:formData.title,
-        description:formData.description,
-        body:formData.body,
-        tags:formData.tags.split(',').map(tag=>tag.trim())//"a,b"=>['a','b']npm 
-      }
 
-    };
-    const sendData = async ()=>{
-      try{
-        const response = await api.post('/articles',payload);
-        console.log('successful new post',response);
-        navigate(`/articles/${response.data.article.slug}`);//redirecting to new article page 
-
-
-
-      }catch(error){
-        console.error("Post failed:",error.response?.data || error.message);
-        alert("Failed to creae post. Are you logged in?")
-      }
-      
-    };
-    sendData();
-    
-
-  }
 
   return (
-    <div className="w-[500px] mx-auto mt-20 px-10"> {/*34px*/}
-    <form onSubmit={handleSubmit}>
-      <Input
-        name="title"
-        type="text"
-        placeholder="Enter title"
-        onChange={handleChange}
-        value={formData.title}
-      />
-      <Input
-        name="description"
-        type="text"
-        placeholder="Short description"
-        onChange={handleChange}
-        value={formData.description}
-      />
-      <Input
-        className="placeholder:text-[#333333]"
-        name="body"
-        type="textarea"
-        placeholder="Input your text"
-        onChange={handleChange}
-        value={formData.body}
-      />
-      <Input 
-      name="tags"
-      className="flex gap-2"
-      type="text"
-      placeholder="Enter tags (separated by commas)"
-      onChange={handleChange}
-      value={formData.tags}
-      />
+    <div className="w-[500px] mx-auto mt-20 px-10">
+      <form onSubmit={handleSubmit(onUpdate)}>
         
-     
-      <div className="flex justify-end">
-        <Button type='submit' className="text-[18px] font-sans">Publish Article</Button>
-      </div>
-      
-    </form>
+        <Input
+          placeholder="Enter title"
+          error={errors.title} 
+          {...register("title", {
+            required: "Title is required",
+            minLength: { value: 3, message: "Min 3 characters" }
+          })}
+        />
+
+        <Input
+          placeholder="Short description"
+          error={errors.description} 
+          {...register("description", {
+            required: "Description is required",
+            minLength: { value: 10, message: "Min 10 characters" }
+          })}
+        />
+
+        <Input
+          className="placeholder:text-[#333333]"
+          type="textarea"
+          placeholder="Input your text"
+          error={errors.body} 
+          {...register("body", {
+            required: "Body is required",
+            minLength: { value: 20, message: "Body must be at least 20 characters" }
+          })}
+        />
+
+        <Input 
+          className="flex gap-2"
+          placeholder="Enter tags (separated by commas)"
+          error={errors.tags} 
+          {...register("tags", {
+            required: "At least one tag is required"
+          })}
+        />
+          
+        <div className="flex justify-end pt-2">
+          <Button 
+            type='submit' 
+            disabled={isSubmitting}
+            className={`text-[18px] font-sans ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            {isSubmitting ? "Updating..." : "Update Article"}
+          </Button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
