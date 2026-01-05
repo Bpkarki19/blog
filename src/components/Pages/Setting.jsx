@@ -46,12 +46,14 @@ export default function Setting() {
   const onUpdate = async (data) => {
     try {
       const payload = { ...data }
-      console.log("payload",payload);
+      //console.log("payload",payload);
       if (!payload.password) delete payload.password
-      const res = await api.put(`/user`, { user: payload });
-      console.log(res);
+      //console.log("payload",payload);
+      const res = await api.put(`/user`, payload);
+      //console.log(res);
       login(res.data.user) //update global state
       alert("settings updated")
+      navigate("/");
     } catch (error) {
       console.error("Update Error:",error);
       if (error.response?.status === 422){

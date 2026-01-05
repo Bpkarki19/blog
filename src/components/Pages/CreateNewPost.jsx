@@ -58,7 +58,7 @@ export default function EditPost() {
           error={errors.description} 
           {...register("description", {
             required: "Description is required",
-            minLength: { value: 10, message: "Min 10 characters" }
+            
           })}
         />
 
@@ -69,7 +69,6 @@ export default function EditPost() {
           error={errors.body} 
           {...register("body", {
             required: "Body is required",
-            minLength: { value: 20, message: "Body must be at least 20 characters" }
           })}
         />
 
