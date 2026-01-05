@@ -22,7 +22,7 @@ export default function ArticlePage() {
 
   const deletePost = async () =>{
     try{
-      const response = await api.delete(`/articles/${slug}`);
+      await api.delete(`/articles/${slug}`);
       setisDeleted(true);
       setTimeout(()=>{
         navigate("/");
