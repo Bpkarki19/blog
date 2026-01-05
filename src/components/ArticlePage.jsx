@@ -16,12 +16,26 @@ export default function ArticlePage() {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const {user} = useAuth();
-  console.log(user.username);
-  console.log(article);
+  const [isDeleted, setisDeleted] = useState(false);
+  //console.log(user.username);
+  //console.log(article);
 
-  
+  const deletePost = async () =>{
+    try{
+      const response = await api.delete(`/articles/${slug}`);
+      setisDeleted(true);
+      setTimeout(()=>{
+        navigate("/");
+      },2000);
+      
+      
 
-  
+    }catch(err){
+      console.log("cannot delete post",err);
+      alert("Failed to delete post. Please try again");
+    }
+
+  }
 
   const centerContent =
     "max-w-7xl mx-auto pb-20 px-4 md:px-20 lg:px-[240px] py-10 w-full overflow-hidden"
@@ -39,6 +53,15 @@ export default function ArticlePage() {
     }
     fetchArticle()
   }, [slug])
+  if(isDeleted){
+    return(
+      <div className="text-center py-40">
+        <h2 className="text-3xl font-bold text-green-600 mb-4">Post deleted successfully!</h2>
+        <p className="text-gray-500">Redirecting you to the home page...</p>
+      </div>
+
+    );
+  }
   if (loading) return <div className="text-center py-20">Loading article </div>
   if (!article)
     return <div className="text-center py-20">Article not found!</div>
@@ -109,7 +132,7 @@ export default function ArticlePage() {
             <Button size="md" onClick={() => navigate(`/editor/${article.slug}`)}>
             Edit{" "}
             </Button>
-            <Button size="md">Delete</Button>
+            <Button size="md" onClick={deletePost}>Delete</Button>
             </> 
           ):(
             <Button size="md" >Favourite article</Button>

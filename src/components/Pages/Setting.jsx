@@ -4,14 +4,19 @@ import api from "../../services/api"
 import { useNavigate } from "react-router-dom"
 import Button from "../UI/Button"
 import Input from "../UI/Input"
+import { useEffect } from "react"
 
 
 export default function Setting() {
   const { user, login, logout } = useAuth()
+  console.log("user at setting",user);
   const navigate = useNavigate()
+
+  
 
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -20,22 +25,46 @@ export default function Setting() {
       username: user?.username || "",
       email: user?.email || "",
       bio: user?.bio || "",
-      image: user?.image || "",
+      image: user?.image || null,
       password: "",
     },
-  })
+  });
+
+  useEffect(()=>{
+    if(user){
+      reset({
+        username:user.username,
+        email:user.email,
+        bio:user.bio||"",
+        image:user.image||"",
+        password:"",
+      });
+    }
+
+  },[user,reset]);
 
   const onUpdate = async (data) => {
     try {
       const payload = { ...data }
+      console.log("payload",payload);
       if (!payload.password) delete payload.password
       const res = await api.put(`/user`, { user: payload });
+      console.log(res);
       login(res.data.user) //update global state
       alert("settings updated")
     } catch (error) {
       console.error("Update Error:",error);
-      const serverError = error.response?.data?.errors;
-      alert(serverError ? JSON.stringify(serverError):"Failed to update profile");
+      if (error.response?.status === 422){
+        const serverErrors = error.response.data.errors; 
+        const errorMessage = Object.entries(serverErrors)
+        .map(([key,message])=>`${key} ${message.join(",")}`).join("\n");
+        alert(`validation Error:\n${errorMessage}`);
+
+      }else if (error.response?.status === 401){
+        alert("Session has expired. Please Log in again.")
+      }else{
+        alert("Failed to update profile. Please try again later.")
+      }
     }
   }
 
@@ -43,6 +72,8 @@ export default function Setting() {
     logout();
     navigate("/", {replace: true});
   };
+
+  if(!user) return <div className="text-center py-20">Loading...</div>;
 
   return (
     <div className="flex-col w-[480px] mx-auto">
@@ -68,7 +99,7 @@ export default function Setting() {
         <Input
           className="h-[100px] placeholder:text-[#333333]"
           type="textarea" // text area keeps it above
-          placeholder="Input your comment"
+          placeholder="Input your bio"
           {...register("bio")}
         />
         <Input
