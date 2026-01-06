@@ -72,7 +72,7 @@ export default function Setting() {
 
   const handleLogout = () => {
     logout();
-    navigate("/", {replace: true});
+    navigate("/sign-in", {replace: true});
   };
 
   if(!user) return <div className="text-center py-20">Loading...</div>;
@@ -87,7 +87,12 @@ export default function Setting() {
           type="text"
           error={errors.username}
           placeholder="username"
-          {...register("username", { required: "Username is required" })}
+          {...register("username", { 
+            required: "Username is required",
+            minLength: { value: 3, message: "Min 3 characters" },
+            maxLength: { value: 20, message: "Max 20 characters" },
+           
+          })}
         />
         <Input
           type="email"

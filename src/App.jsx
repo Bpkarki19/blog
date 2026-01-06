@@ -30,8 +30,7 @@ export default function App() {
       <Routes> 
         <Route path="/" element={<HomePage/>}/>
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
-        <Route path="/new-post" 
-        element = { currentUser ? <CreateNewPost/>:<Navigate to ="/sign-in"/>}/>
+        <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
         <Route path='/sign-in' element={<Login onLogin={setCurrentUser}/>}/>
         <Route path="/sign-up" element={<Registration/>}/>

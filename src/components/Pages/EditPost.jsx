@@ -73,16 +73,14 @@ export default function EditPost() {
         error = {errors.title}
         {...register("title",{
           required:"Title is required",
-          minLength:{value:3, message:"Min 3 characters"},
-          maxLength:{value:50, message:"Max 50 characters"},
+          
       })}
       />
       <Input
 
         {...register("description",{
           required:"description is required",
-          minLength:{value:15, message:"Min 15 characters"},
-          maxLength:{value:100, message: "Max 100 character"}
+         
         })}
         placeholder="Short description"
         error = {errors.description}
@@ -92,8 +90,7 @@ export default function EditPost() {
         error = {errors.body}
         {...register("body",{
           required:"Body is required",
-          minLength:{value:15, message:"Min 15 characters"},
-          maxLength:{value:200, message: "Max 200 character"}
+          
 
         })}
         type="textarea"
@@ -102,9 +99,7 @@ export default function EditPost() {
       />
       <Input 
         error = {errors.tags}
-        {...register("tags",{
-          required:"Atlest one tag is required",
-        })}
+        {...register("tags")}
         className="flex gap-2"
         placeholder="Enter tags (separated by commas)"
       />

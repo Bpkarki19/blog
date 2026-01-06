@@ -16,12 +16,7 @@ export default function LoggedOutLink() {
           Sign up
         </NavLink>
       </li>
-      <li className="flex items-center gap-2 hover:text-green-500 transition-colors">
-        <User size={18} className={iconColor} fill={brandGreen} />
-        <Link to="/profile" className={navLinkStyle}>
-          user
-        </Link>
-      </li>
+      
     </>
   )
 }

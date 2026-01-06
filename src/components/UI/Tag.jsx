@@ -1,12 +1,13 @@
 export default function Tag({ children,
     clickable = false, 
     className = "" }) {
-  const baseStyles = "border border-[#AAAAAA] text-[#AAAAAA] font-semibold px-3 py-0.5 rounded-full text-[12.8px] transition-colors";
+  const baseStyles = "border border-[#AAAAAA] text-[#AAAAAA] font-semibold px-3 py-0.5 rounded-full text-[12.8px] transition-colors ";
   
   // If clickable, we adding hover effects and a pointer cursor
   const interactionStyles = clickable 
     ? "hover:bg-gray-100 hover:text-gray-600 cursor-pointer" 
     : "cursor-default";
+  if (!children) return null;
 
   return (
     <span className={`${baseStyles} ${interactionStyles} ${className}`}>

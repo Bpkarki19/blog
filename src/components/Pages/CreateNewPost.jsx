@@ -76,9 +76,7 @@ export default function EditPost() {
           className="flex gap-2"
           placeholder="Enter tags (separated by commas)"
           error={errors.tags} 
-          {...register("tags", {
-            required: "At least one tag is required"
-          })}
+          {...register("tags")}
         />
           
         <div className="flex justify-end pt-2">
