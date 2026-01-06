@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -15,13 +15,6 @@ import EditPost from './components/Pages/EditPost'
 
 
 export default function App() {
-  // React runs this function ONLY ONCE, at the very beginning
-  const [currentUser, setCurrentUser] = useState(()=>{
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved):null;
-  });
-  
- 
   return (
     <>
     <Router>
@@ -32,7 +25,7 @@ export default function App() {
         <Route path="/articles/:slug" element={<ArticlePage/>}/>
         <Route path="/new-post" element = {<CreateNewPost/>}/>
         <Route path='/setting' element={<Setting/>}/>
-        <Route path='/sign-in' element={<Login onLogin={setCurrentUser}/>}/>
+        <Route path='/sign-in' element={<Login/>}/>
         <Route path="/sign-up" element={<Registration/>}/>
         <Route path='/profile/:username' element={<Profile/>}/>
         <Route path="*" element={<Navigate to="/" />} />

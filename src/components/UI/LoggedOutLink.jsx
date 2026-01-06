@@ -1,9 +1,8 @@
-import { Link,NavLink } from "react-router-dom"
-import {User } from 'lucide-react';
+import { NavLink } from "react-router-dom"
+
 export default function LoggedOutLink() {
   const navLinkStyle = "text-[#333333] text-[16px] font-semibold"
-  const iconColor = 'text-[#61BB61]'
-  const brandGreen = '#61BB61'
+  
   return (
     <>
       <li>
