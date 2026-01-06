@@ -1,10 +1,10 @@
-import { useState } from "react"
-import axios from "axios"
-import Input from "../UI/Input"
-import Button from "../UI/Button"
-import { useNavigate, Link } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { useAuth } from "../../context/AuthContext" // Ensure path is correct
+import { useState } from "react";
+import Input from "../UI/Input";
+import Button from "../UI/Button";
+import { useNavigate} from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../context/AuthContext";// Ensure path is correct
+import api from "../../services/api";
 
 export default function Registration() {
   const { login } = useAuth()
@@ -33,10 +33,10 @@ export default function Registration() {
         },
       }
 
-      const response = await axios.post(`/users`, payload);
+      const response = await api.post(`/users`, payload);
 
       // Update global auth context and redirect
-      login(response.data.user)
+      login(response.data.user);
       navigate("/")
     } catch (err) {
       if (err.response?.data?.errors) {
